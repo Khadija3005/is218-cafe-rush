@@ -60,3 +60,54 @@ Still planned: five user stories, architecture sketch, uncertain creative experi
 - **Planned, not completed:** Verification of stack choices against original documentation and full course instructions.
 
 ChatGPT assisted with comparing concepts and drafting this initial plan. No peer feedback, user research or application test results are claimed.
+
+
+## Review 1 update - stories, architecture and experiment
+
+This update supersedes the earlier next-work list: the stories, sketch and experiment below are now documented. Application behavior remains planned and untested.
+
+### Five user stories and planned acceptance checks
+
+1. As a student, I want to register, log in and log out so my records stay private. Check: duplicate usernames and incorrect passwords fail; signed-out requests cannot access the dashboard.
+2. As a student, I want to record a subject, minutes and date so I can track a study session. Check: empty subjects, invalid dates and zero/negative/non-integer minutes are rejected on the server.
+3. As a student, I want sessions saved so I can return later. Check: a saved session survives logout/login and an application restart using the same database.
+4. As a student, I want a private history and total study time so I can review progress. Check: two users see only their own records and correct totals; changing identifiers cannot expose another user's data.
+5. As a student, I want to update my display name and password so I can maintain my account. Check: updates require authentication and current-password confirmation for a password change; the new password works and the old one fails.
+
+### Architecture sketch (planned)
+
+`
+Browser: HTML/CSS and Jinja forms
+  -> Flask routes: authentication, sessions, dashboard, account
+  -> Services: input validation, ownership checks, totals
+  -> Repository layer: parameterized SQL
+  -> SQLite: users and study_sessions
+`
+
+Browser requests return through the same layers as rendered HTML. The server uses the authenticated user ID rather than trusting an owner ID from a form. CSRF protection is planned for state-changing forms. Passwords are hashed. Secrets and the live database stay out of Git.
+
+Planned modules: app/__init__.py (factory), auth.py, sessions.py, account.py, services.py, repositories.py, templates/ and tests/.
+
+Planned data: users(id, username UNIQUE, display_name, password_hash); study_sessions(id, user_id, subject, minutes, session_date). Each session belongs to a user.
+
+### Uncertain creative experiment
+
+Question: Does a weekly goal progress bar help students understand progress more quickly than a minutes-only summary?
+
+Compare two paper/static mockups with the same example: 180 minutes studied toward a 300-minute goal. One shows numbers only; one adds a labeled 60% bar. Ask a classmate how many minutes remain and whether the goal is complete. Record answer accuracy, time and confusing wording. Try the views in alternating order if more than one peer participates. A single peer gives exploratory feedback, not proof of general effectiveness.
+
+Decision rule: keep the bar if the reviewer correctly identifies 120 minutes remaining and understands the labels without extra explanation; otherwise revise or defer it. Both versions must keep readable numeric labels so color is not the only cue.
+
+Status: PLANNED; no participant or result recorded.
+
+### Pattern experiment (planned)
+
+Compare direct SQL in a route with a small repository layer for saving/listing sessions. Use the same validation, persistence and ownership tests for both. Assess whether the repository makes those responsibilities easier to explain without unnecessary complexity. No comparison has been run.
+
+### Research and peer review
+
+Research site source: [docs/index.html](docs/index.html). Intended published address: https://Khadija3005.github.io/is218-study-tracker/ (publication must be verified).
+
+Peer task: open an original source, explain the Flask/SQLite choice in your own words, and identify an assumption or confusing part. Record the actual feedback in a GitHub issue with the reviewer's name/handle, date, decision (implement/investigate/defer/decline), reason, change link, verification and reviewer retry. Keep unresolved work open with a next step. Peer review is pending; AI assistance does not replace it.
+
+Career research site: URL not supplied yet. Cross-linking remains open; do not invent a career-site address.

@@ -1,113 +1,62 @@
-# Study Session Tracker - Project Plan
+# Café Rush - Creative Project Plan
 
-**Course:** IS218-003  
-**Stage:** Review 1 - Plan  
-**Date:** November 12, 2026  
-**Status:** Initial plan; application not implemented.
+**Course:** IS218-003 | **Stage:** Review 1 - Plan | **Date:** November 12, 2026
 
-## Comparing two bounded concepts
+## Two concepts and choice
 
-| Area | Study Session Tracker | Rock-Paper-Scissors Game |
-| --- | --- | --- |
-| Audience | College students | Casual players |
-| Useful interaction | Enter a study subject, duration and date | Play a round against the computer |
-| Saved record | Subject, minutes and date owned by the user | Choices and outcome owned by the user |
-| Private dashboard | Session history and total study time | Match history and win/loss/tie totals |
-| Account access | Register, log in and log out | Register, log in and log out |
-| Account maintenance | Update display name and password | Update display name and password |
-| Scope boundary | Manual entry; no live timer, social features or calendar integration | Single player; no multiplayer or chat |
-| Main uncertainty | Whether summaries help students understand study habits | Whether repeated rounds remain interesting |
+| Concept | Useful interaction | Saved record | Scope |
+| --- | --- | --- | --- |
+| Café Rush - selected | Make customer drinks | Verified round score and order outcomes | Three recipes, five orders, single player |
+| Study Session Tracker | Enter study subject and minutes | Personal study history | Manual logging and totals |
 
-## Selected concept and reason
+Café Rush was selected because making drinks and completing orders is a more playful project. This is a preference and scope decision, not evidence that other players prefer it.
 
-The selected concept is the Study Session Tracker. It gives college students a practical way to record study sessions and review time spent across subjects. Its small workflow still requires account access, server-side security, persistent records, a private dashboard and account maintenance. Compared with the game, it connects more directly to a routine college task.
+## Audience and complete promise
 
-This is a design choice, not evidence that students prefer this concept. Usefulness and ease of use still need peer feedback.
+Audience: college students wanting a quick casual game. Register and log in, play a five-order café round, save the server-verified result, view a private score history and best score, update display name/password, and log out.
 
-## Audience and problem
+Baseline rules: three fixed recipes (espresso, latte, mocha); the server assigns five orders. Select ingredients and submit each drink once. A correct recipe earns 20 points; an incorrect recipe earns zero and advances to the next order. Maximum score: 100. No multiplayer, chat, payments or café-building system. Timing is an optional experiment, not required for the baseline.
 
-The audience is college students studying for several courses who want a simple record of their study time. The assumed problem is that students may find it difficult to remember how much time they spent on each subject. This assumption has not yet been tested with users.
+## Stack
 
-## Finished workflow promise
+Python, Flask, Jinja/HTML/CSS, small JavaScript interactions, SQLite and pytest. The GitHub Pages research site is documentation; the future Flask game needs separate server hosting. Dependencies and runtime compatibility are untested.
 
-A student can create an account, log in, enter a subject, positive whole-number duration in minutes and session date, and save the session. After saving, the student sees it in a private dashboard with their history and total study time. Records remain available after logging out and back in. The student can update their display name and password, then log out.
+## Five stories and planned checks
 
-The server must determine ownership from the authenticated account. Students must not be able to access another student's records by changing a URL or submitted identifier. Passwords must be stored as hashes and input must be validated on the server. These are planned requirements, not verified behavior.
+1. As a player, I want to register, log in and log out to keep my results private. Check duplicate usernames, incorrect credentials and signed-out access.
+2. As a player, I want to select ingredients to complete customer orders. Check all three recipes and incorrect combinations against server-side rules.
+3. As a player, I want finished rounds saved so I can return later. Check persistence after logout/login and restart; repeated final submissions must not create duplicate results.
+4. As a player, I want private history and a best score to see progress. Use two accounts to check isolation and accurate totals; reject another user's round IDs.
+5. As a player, I want to update my display name and password to maintain my account. Require authentication and current-password confirmation for password changes; verify old/new credentials.
 
-## Proposed stack
+## Planned architecture
 
-| Part | Tool | Purpose |
-| --- | --- | --- |
-| Language | Python | Application and business logic |
-| Server framework | Flask | Routes, requests and server-rendered pages |
-| Interface | HTML, CSS and Jinja templates | Account forms, session entry and dashboard |
-| Database | SQLite | Persistent user and study-session records |
-| Testing | pytest | Validation, persistence, access and ownership checks |
-| Version control | Git and GitHub | Project history and review records |
+| Layer | Responsibility |
+| --- | --- |
+| Browser | Show order, ingredient choices and result |
+| Flask routes | Accounts, round actions, dashboard and settings |
+| Game service | Assign orders, validate recipes, advance state, calculate score |
+| Repository | Parameterized SQL and transactions |
+| SQLite | Users, rounds, order attempts and final results |
 
-This stack is proposed and must be checked against the full course requirements before implementation. No dependencies have been installed and no runtime or compatibility checks have been run.
+Requests pass through these layers; responses return as rendered HTML. The server owns the order sequence, progress and score rather than accepting a browser score. Derive ownership from the signed-in account, prevent replayed submissions, hash passwords, validate input and protect state-changing forms against CSRF. These are planned requirements, not implemented protections.
 
-## Current scope and next work
+## Uncertain creative experiment - planned
 
-Completed in this initial plan: two-concept comparison, audience selection, bounded workflow promise and proposed stack.
+Does a visible countdown make the game exciting or confusing? Compare five-order prototype rounds with and without a 90-second limit. Ask a classmate to identify orders, assemble drinks and describe pressure/confusion. Record errors, completion and comments. Keep the timer if it adds enjoyment without preventing understanding; otherwise defer it. If adopted, enforce timing on the server. No experiment results exist yet.
 
-Still planned: five user stories, architecture sketch, uncertain creative experiment, research with verified original sources, published research site and career-site cross-links, real peer review recorded in issues, implementation and meaningful tests.
+## Pattern experiment - planned
+
+Compare recipe-validation conditionals with a recipe lookup/strategy interface using identical correct/incorrect recipe tests. Assess clarity and ease of adding a fourth recipe. No comparison has been run.
+
+## Research and review
+
+[Research site](https://khadija3005.github.io/is218-study-tracker/) | [Review issue](https://github.com/Khadija3005/is218-study-tracker/issues/1)
+
+Peer review is pending and will be completed with a classmate in class. Ask the reviewer to open a source, explain the stack choice and identify an assumption/confusing part. Record specific feedback, decision/reason, change/check links and reviewer retry. Keep unfinished work open.
+
+Career research site URL is needed for cross-links. The repository address is retained so existing submission links continue to work.
 
 ## Checks and AI assistance
 
-- **Observed:** This plan compares two concepts and identifies the chosen audience, workflow and proposed stack.
-- **Planned, not run:** Application tests, security checks, persistence checks and user feedback.
-- **Planned, not completed:** Verification of stack choices against original documentation and full course instructions.
-
-ChatGPT assisted with comparing concepts and drafting this initial plan. No peer feedback, user research or application test results are claimed.
-
-
-## Review 1 update - stories, architecture and experiment
-
-This update supersedes the earlier next-work list: the stories, sketch and experiment below are now documented. Application behavior remains planned and untested.
-
-### Five user stories and planned acceptance checks
-
-1. As a student, I want to register, log in and log out so my records stay private. Check: duplicate usernames and incorrect passwords fail; signed-out requests cannot access the dashboard.
-2. As a student, I want to record a subject, minutes and date so I can track a study session. Check: empty subjects, invalid dates and zero/negative/non-integer minutes are rejected on the server.
-3. As a student, I want sessions saved so I can return later. Check: a saved session survives logout/login and an application restart using the same database.
-4. As a student, I want a private history and total study time so I can review progress. Check: two users see only their own records and correct totals; changing identifiers cannot expose another user's data.
-5. As a student, I want to update my display name and password so I can maintain my account. Check: updates require authentication and current-password confirmation for a password change; the new password works and the old one fails.
-
-### Architecture sketch (planned)
-
-`
-Browser: HTML/CSS and Jinja forms
-  -> Flask routes: authentication, sessions, dashboard, account
-  -> Services: input validation, ownership checks, totals
-  -> Repository layer: parameterized SQL
-  -> SQLite: users and study_sessions
-`
-
-Browser requests return through the same layers as rendered HTML. The server uses the authenticated user ID rather than trusting an owner ID from a form. CSRF protection is planned for state-changing forms. Passwords are hashed. Secrets and the live database stay out of Git.
-
-Planned modules: app/__init__.py (factory), auth.py, sessions.py, account.py, services.py, repositories.py, templates/ and tests/.
-
-Planned data: users(id, username UNIQUE, display_name, password_hash); study_sessions(id, user_id, subject, minutes, session_date). Each session belongs to a user.
-
-### Uncertain creative experiment
-
-Question: Does a weekly goal progress bar help students understand progress more quickly than a minutes-only summary?
-
-Compare two paper/static mockups with the same example: 180 minutes studied toward a 300-minute goal. One shows numbers only; one adds a labeled 60% bar. Ask a classmate how many minutes remain and whether the goal is complete. Record answer accuracy, time and confusing wording. Try the views in alternating order if more than one peer participates. A single peer gives exploratory feedback, not proof of general effectiveness.
-
-Decision rule: keep the bar if the reviewer correctly identifies 120 minutes remaining and understands the labels without extra explanation; otherwise revise or defer it. Both versions must keep readable numeric labels so color is not the only cue.
-
-Status: PLANNED; no participant or result recorded.
-
-### Pattern experiment (planned)
-
-Compare direct SQL in a route with a small repository layer for saving/listing sessions. Use the same validation, persistence and ownership tests for both. Assess whether the repository makes those responsibilities easier to explain without unnecessary complexity. No comparison has been run.
-
-### Research and peer review
-
-Research site source: [docs/index.html](docs/index.html). Intended published address: https://Khadija3005.github.io/is218-study-tracker/ (publication must be verified).
-
-Peer task: open an original source, explain the Flask/SQLite choice in your own words, and identify an assumption or confusing part. Record the actual feedback in a GitHub issue with the reviewer's name/handle, date, decision (implement/investigate/defer/decline), reason, change link, verification and reviewer retry. Keep unresolved work open with a next step. Peer review is pending; AI assistance does not replace it.
-
-Career research site: URL not supplied yet. Cross-linking remains open; do not invent a career-site address.
+The plan documents two concepts, audience, workflow, five stories, stack, architecture and planned experiments. Game implementation, tests and real peer review remain unrun. Official framework/database sources were reviewed during initial research. Game rules and enjoyment assumptions are design proposals. ChatGPT assisted with drafting and revising the plan.

@@ -55,7 +55,7 @@ Compare recipe-validation conditionals with a recipe lookup/strategy interface u
 
 Peer review is pending and will be completed with a classmate in class. Ask the reviewer to open a source, explain the stack choice and identify an assumption/confusing part. Record specific feedback, decision/reason, change/check links and reviewer retry. Keep unfinished work open.
 
-Career research site URL is needed for cross-links. The repository address is retained so existing submission links continue to work.
+Career research site URL is needed for cross-links. The repository and research site use the Café Rush name.
 
 ## Checks and AI assistance
 
